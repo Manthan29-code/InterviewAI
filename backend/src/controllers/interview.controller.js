@@ -1,6 +1,6 @@
 const pdfPars = require("pdf-parse")
 const { generateInterviewReport, generateResumePdf } = require("../service/ai.service") 
-const interviewReportModel = require("../models/interviewReport.model")
+const interviewReportModel = require("../model/interviewReport.model")
 
 /**
  * @description Controller to generate interview report based on user self description, resume and job description.
