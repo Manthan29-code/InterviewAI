@@ -1,2 +1,6 @@
 link.md
 node_modules
+docs/*
+docs/controllers/*
+./docs
+*.txt
