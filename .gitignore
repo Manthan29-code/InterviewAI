@@ -4,3 +4,4 @@ docs/*
 docs/controllers/*
 ./docs
 *.txt
+.env

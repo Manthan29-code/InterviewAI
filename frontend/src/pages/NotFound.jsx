@@ -10,7 +10,7 @@ const NotFound = () => (
       <p className="mt-3 text-sm text-[color:var(--neo-muted)]">
         The page you are looking for does not exist.
       </p>
-      <Link className="neo-button inline-flex mt-6 px-6 py-2 text-sm" to="/">
+      <Link className="neo-button inline-flex mt-6 px-6 py-2 text-sm focus-visible:ring-2 focus-visible:ring-[color:var(--neo-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--neo-bg)]" to="/">
         Back to dashboard
       </Link>
     </div>

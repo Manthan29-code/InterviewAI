@@ -22,7 +22,7 @@ const TopBar = () => {
             <p className="font-medium">{user?.username || "Candidate"}</p>
           </div>
           <button
-            className="neo-button px-4 py-2 text-sm font-semibold"
+            className="neo-button px-4 py-2 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-[color:var(--neo-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--neo-bg)]"
             onClick={() => dispatch(logoutUser())}
             disabled={status === "loading"}
           >

@@ -79,7 +79,7 @@ const AuthPage = () => {
               </p>
             </div>
             <button
-              className="neo-button px-4 py-2 text-xs uppercase tracking-[0.3em]"
+              className="neo-button px-4 py-2 text-xs uppercase tracking-[0.3em] focus-visible:ring-2 focus-visible:ring-[color:var(--neo-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--neo-bg)]"
               onClick={() => setMode(mode === "register" ? "login" : "register")}
             >
               {mode === "register" ? "Login" : "Register"}
@@ -90,7 +90,7 @@ const AuthPage = () => {
               <label className="flex flex-col gap-2 text-sm font-medium">
                 Username
                 <input
-                  className="neo-input px-4 py-3"
+                  className="neo-input px-4 py-3 focus-visible:ring-2 focus-visible:ring-[color:var(--neo-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--neo-bg)]"
                   name="username"
                   value={formData.username}
                   onChange={onChange}
@@ -102,7 +102,7 @@ const AuthPage = () => {
             <label className="flex flex-col gap-2 text-sm font-medium">
               Email
               <input
-                className="neo-input px-4 py-3"
+                className="neo-input px-4 py-3 focus-visible:ring-2 focus-visible:ring-[color:var(--neo-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--neo-bg)]"
                 type="email"
                 name="email"
                 value={formData.email}
@@ -114,7 +114,7 @@ const AuthPage = () => {
             <label className="flex flex-col gap-2 text-sm font-medium">
               Password
               <input
-                className="neo-input px-4 py-3"
+                className="neo-input px-4 py-3 focus-visible:ring-2 focus-visible:ring-[color:var(--neo-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--neo-bg)]"
                 type="password"
                 name="password"
                 value={formData.password}
@@ -129,7 +129,7 @@ const AuthPage = () => {
               </div>
             )}
             <button
-              className="neo-button px-6 py-3 font-semibold"
+              className="neo-button px-6 py-3 font-semibold bg-[color:var(--neo-accent)] text-white focus-visible:ring-2 focus-visible:ring-[color:var(--neo-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--neo-bg)]"
               type="submit"
               disabled={status === "loading"}
             >

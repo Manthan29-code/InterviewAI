@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { fetchReports } from "../store/reports.slice";
 import TopBar from "../components/TopBar";
 
@@ -26,15 +27,14 @@ const DashboardPage = () => {
               </p>
             </div>
             <div className="flex flex-col items-start gap-2">
-              <button
-                className="neo-button px-5 py-2 text-sm font-semibold opacity-70 cursor-not-allowed"
-                disabled
-                title="Report creation will be available soon."
+              <Link
+                className="neo-button px-5 py-2 text-sm font-semibold bg-[color:var(--neo-accent)] text-white focus-visible:ring-2 focus-visible:ring-[color:var(--neo-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--neo-bg)]"
+                to="/reports/new"
               >
                 Create report
-              </button>
+              </Link>
               <span className="text-xs text-[color:var(--neo-muted)]">
-                Coming soon: resume upload and report generation.
+                Upload a resume and generate a new report.
               </span>
             </div>
           </div>
@@ -57,7 +57,11 @@ const DashboardPage = () => {
           {items.length > 0 && (
             <div className="grid gap-4 md:grid-cols-2">
               {items.map((report) => (
-                <article key={report._id} className="neo-card p-5">
+                <Link
+                  key={report._id}
+                  to={`/reports/${report._id}`}
+                  className="neo-card p-5 focus-visible:ring-2 focus-visible:ring-[color:var(--neo-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--neo-bg)]"
+                >
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <h3 className="font-display text-lg font-bold">
@@ -73,7 +77,7 @@ const DashboardPage = () => {
                       {report.matchScore ?? "--"}% match
                     </span>
                   </div>
-                </article>
+                </Link>
               ))}
             </div>
           )}
