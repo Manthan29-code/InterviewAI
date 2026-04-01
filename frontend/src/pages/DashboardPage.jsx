@@ -31,7 +31,7 @@ const DashboardPage = () => {
                 className="neo-button px-5 py-2 text-sm font-semibold bg-[color:var(--neo-accent)] text-white focus-visible:ring-2 focus-visible:ring-[color:var(--neo-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--neo-bg)]"
                 to="/reports/new"
               >
-                Create report
+                <span className="text-white">Create report</span>
               </Link>
               <span className="text-xs text-[color:var(--neo-muted)]">
                 Upload a resume and generate a new report.

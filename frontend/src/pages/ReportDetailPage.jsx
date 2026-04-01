@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { fetchReportById } from "../store/reports.slice";
+import {
+  CollapsibleItem,
+  CollapsibleSection,
+} from "../components/CollapsibleSection";
 import { api } from "../services/api";
 
 const ReportDetailPage = () => {
@@ -44,53 +48,20 @@ const ReportDetailPage = () => {
     }
   };
 
-  const sections = [
-    {
-      title: "Technical questions",
-      items: detail?.technicalQuestions || [],
-    },
-    {
-      title: "Behavioral questions",
-      items: detail?.behavioralQuestions || [],
-    },
-    {
-      title: "Skill gaps",
-      items: detail?.skillGaps || [],
-    },
-    {
-      title: "Preparation plan",
-      items: detail?.preparationPlan || [],
-    },
-  ];
+  const technicalQuestions = detail?.technicalQuestions || [];
+  const behavioralQuestions = detail?.behavioralQuestions || [];
+  const skillGaps = detail?.skillGaps || [];
+  const preparationPlan = detail?.preparationPlan || [];
 
-  const renderItem = (item) => {
-    if (item == null) {
-      return null;
+  const getPreview = (value) => {
+    if (!value) {
+      return "";
     }
-
-    if (typeof item === "string") {
-      return <p>{item}</p>;
+    const text = String(value).trim();
+    if (text.length <= 120) {
+      return text;
     }
-
-    if (typeof item === "object") {
-      const question = item.question || item.title || "";
-      const intention = item.intention || "";
-      const answer = item.answer || item.tip || "";
-
-      return (
-        <div className="space-y-1">
-          {question && <p className="font-medium">{question}</p>}
-          {intention && (
-            <p className="text-xs text-[color:var(--neo-muted)]">
-              Intention: {intention}
-            </p>
-          )}
-          {answer && <p>{answer}</p>}
-        </div>
-      );
-    }
-
-    return <p>{String(item)}</p>;
+    return `${text.slice(0, 120)}...`;
   };
 
   return (
@@ -153,7 +124,7 @@ const ReportDetailPage = () => {
 
         {detailStatus === "succeeded" && detail && (
           <div className="grid gap-6 md:grid-cols-[1.2fr_0.8fr]">
-            <section className="neo-card p-6 md:p-8 flex flex-col gap-4">
+            <section className="h-fit neo-card p-6 md:p-8 flex flex-col gap-5">
               <div className="flex flex-wrap items-center gap-3">
                 <span className="neo-inset rounded-full px-3 py-1 text-xs text-[color:var(--neo-muted)]">
                   Match score: {detail.matchScore ?? "--"}%
@@ -163,40 +134,178 @@ const ReportDetailPage = () => {
                 </span>
               </div>
               <div>
-                <h2 className="font-display text-xl font-bold">Job description</h2>
-                <p className="mt-2 text-sm text-[color:var(--neo-muted)] whitespace-pre-line">
+                <h2 className="font-display text-xl font-bold md:text-2xl">
+                  Job description
+                </h2>
+                <p className="mt-2 text-sm text-[color:var(--neo-muted)] whitespace-pre-line leading-relaxed">
                   {detail.jobDescription || "No job description provided."}
                 </p>
               </div>
               <div>
-                <h2 className="font-display text-xl font-bold">Self description</h2>
-                <p className="mt-2 text-sm text-[color:var(--neo-muted)] whitespace-pre-line">
+                <h2 className="font-display text-xl font-bold md:text-2xl">
+                  Self description
+                </h2>
+                <p className="mt-2 text-sm text-[color:var(--neo-muted)] whitespace-pre-line leading-relaxed">
                   {detail.selfDescription || "No self description provided."}
                 </p>
               </div>
             </section>
 
-            <section className="neo-card p-6 md:p-8 flex flex-col gap-6">
-              {sections.map((section) => (
-                <div key={section.title}>
-                  <h3 className="font-display text-lg font-bold">
-                    {section.title}
-                  </h3>
-                  {section.items.length === 0 ? (
-                    <p className="mt-2 text-sm text-[color:var(--neo-muted)]">
-                      No items available yet.
-                    </p>
-                  ) : (
-                    <ul className="mt-2 space-y-2 text-sm text-[color:var(--neo-muted)]">
-                      {section.items.map((item, index) => (
-                        <li key={`${section.title}-${index}`}>
-                          {renderItem(item)}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              ))}
+            <section className="neo-card p-6 md:p-8 flex flex-col gap-4">
+              <CollapsibleSection
+                title="Technical questions"
+                description="Questions to validate depth of technical experience."
+                count={technicalQuestions.length}
+                defaultCollapsed
+              >
+                {technicalQuestions.length === 0 ? (
+                  <p className="text-sm text-[color:var(--neo-muted)]">
+                    No technical questions available yet.
+                  </p>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    {technicalQuestions.map((item, index) => (
+                      <CollapsibleItem
+                        key={`technical-${index}`}
+                        title={item.question || "Untitled question"}
+                        meta={
+                          item.intention
+                            ? `Intention: ${item.intention}`
+                            : ""
+                        }
+                        preview={getPreview(item.answer)}
+                        defaultCollapsed
+                      >
+                        <p className="text-sm text-[color:var(--neo-muted)] leading-relaxed">
+                          {item.answer || "No answer provided."}
+                        </p>
+                      </CollapsibleItem>
+                    ))}
+                  </div>
+                )}
+              </CollapsibleSection>
+
+              <CollapsibleSection
+                title="Behavioral questions"
+                description="Communication and leadership checkpoints."
+                count={behavioralQuestions.length}
+                defaultCollapsed
+              >
+                {behavioralQuestions.length === 0 ? (
+                  <p className="text-sm text-[color:var(--neo-muted)]">
+                    No behavioral questions available yet.
+                  </p>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    {behavioralQuestions.map((item, index) => (
+                      <CollapsibleItem
+                        key={`behavioral-${index}`}
+                        title={item.question || "Untitled question"}
+                        meta={
+                          item.intention
+                            ? `Intention: ${item.intention}`
+                            : ""
+                        }
+                        preview={getPreview(item.answer)}
+                        defaultCollapsed
+                      >
+                        <p className="text-sm text-[color:var(--neo-muted)] leading-relaxed">
+                          {item.answer || "No answer provided."}
+                        </p>
+                      </CollapsibleItem>
+                    ))}
+                  </div>
+                )}
+              </CollapsibleSection>
+
+              <CollapsibleSection
+                title="Skill gaps"
+                description="Areas to improve before the interview."
+                count={skillGaps.length}
+                defaultCollapsed
+              >
+                {skillGaps.length === 0 ? (
+                  <p className="text-sm text-[color:var(--neo-muted)]">
+                    No skill gaps available yet.
+                  </p>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    {skillGaps.map((item, index) => (
+                      <CollapsibleItem
+                        key={`skill-${index}`}
+                        title={item.skill || "Skill gap"}
+                        meta={
+                          item.severity
+                            ? `Severity: ${item.severity}`
+                            : ""
+                        }
+                        preview={
+                          item.severity
+                            ? `Priority: ${item.severity}`
+                            : ""
+                        }
+                        defaultCollapsed
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="neo-inset rounded-full px-3 py-1 text-xs text-[color:var(--neo-muted)]">
+                            {item.severity || "Unrated"}
+                          </span>
+                          <span className="text-xs text-[color:var(--neo-muted)]">
+                            Focus area
+                          </span>
+                        </div>
+                      </CollapsibleItem>
+                    ))}
+                  </div>
+                )}
+              </CollapsibleSection>
+
+              <CollapsibleSection
+                title="Preparation plan"
+                description="Daily plan to close gaps and build confidence."
+                count={preparationPlan.length}
+                defaultCollapsed
+              >
+                {preparationPlan.length === 0 ? (
+                  <p className="text-sm text-[color:var(--neo-muted)]">
+                    No preparation plan available yet.
+                  </p>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    {preparationPlan.map((item, index) => (
+                      <CollapsibleItem
+                        key={`plan-${index}`}
+                        title={
+                          item.day
+                            ? `Day ${item.day}: ${item.focus || "Focus"}`
+                            : item.focus || "Plan"
+                        }
+                        meta={item.focus ? `Focus: ${item.focus}` : ""}
+                        preview={
+                          Array.isArray(item.tasks)
+                            ? getPreview(item.tasks[0])
+                            : ""
+                        }
+                        defaultCollapsed
+                      >
+                        {Array.isArray(item.tasks) && item.tasks.length > 0 ? (
+                          <ul className="space-y-2 text-sm text-[color:var(--neo-muted)]">
+                            {item.tasks.map((task, taskIndex) => (
+                              <li key={`task-${index}-${taskIndex}`}>
+                                {task}
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="text-sm text-[color:var(--neo-muted)]">
+                            No tasks listed for this day.
+                          </p>
+                        )}
+                      </CollapsibleItem>
+                    ))}
+                  </div>
+                )}
+              </CollapsibleSection>
             </section>
           </div>
         )}
