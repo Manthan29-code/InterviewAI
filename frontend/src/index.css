@@ -127,3 +127,7 @@ a {
 .float-slow {
   animation: float 3s ease-in-out infinite;
 }
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

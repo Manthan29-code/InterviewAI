@@ -124,7 +124,7 @@ const ReportDetailPage = () => {
 
         {detailStatus === "succeeded" && detail && (
           <div className="grid gap-6 md:grid-cols-[1.2fr_0.8fr]">
-            <section className="h-fit neo-card p-6 md:p-8 flex flex-col gap-5">
+            <section className="h-screen overflow-y-scroll hide-scrollbar neo-card p-6 md:p-8 flex flex-col gap-5">
               <div className="flex flex-wrap items-center gap-3">
                 <span className="neo-inset rounded-full px-3 py-1 text-xs text-[color:var(--neo-muted)]">
                   Match score: {detail.matchScore ?? "--"}%
@@ -151,7 +151,7 @@ const ReportDetailPage = () => {
               </div>
             </section>
 
-            <section className="neo-card p-6 md:p-8 flex flex-col gap-4">
+            <section className="h-screen overflow-y-scroll hide-scrollbar neo-card p-6 md:p-8 flex flex-col gap-4">
               <CollapsibleSection
                 title="Technical questions"
                 description="Questions to validate depth of technical experience."
