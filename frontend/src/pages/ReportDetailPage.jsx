@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FaAlignLeft, FaAlignRight, FaColumns } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { fetchReportById } from "../store/reports.slice";
@@ -16,6 +17,7 @@ const ReportDetailPage = () => {
   );
   const [downloadError, setDownloadError] = useState(null);
   const [downloading, setDownloading] = useState(false);
+  const [panelMode, setPanelMode] = useState("both");
 
   useEffect(() => {
     if (reportId) {
@@ -64,6 +66,40 @@ const ReportDetailPage = () => {
     return `${text.slice(0, 120)}...`;
   };
 
+  const getNextPanelMode = () => {
+    if (panelMode === "left") {
+      return "both";
+    }
+    if (panelMode === "both") {
+      return "right";
+    }
+    return "left";
+  };
+
+  const handlePanelModeToggle = () => {
+    setPanelMode(getNextPanelMode());
+  };
+
+  const nextPanelMode = getNextPanelMode();
+  const panelModeLabel =
+    panelMode === "left" ? "Left" : panelMode === "right" ? "Right" : "Both";
+  const nextPanelModeLabel =
+    nextPanelMode === "left"
+      ? "Left"
+      : nextPanelMode === "right"
+        ? "Right"
+        : "Both";
+
+  const PanelModeIcon =
+    panelMode === "left"
+      ? FaAlignLeft
+      : panelMode === "right"
+        ? FaAlignRight
+        : FaColumns;
+
+  const desktopGridClass =
+    panelMode === "both" ? "md:grid-cols-[1.2fr_0.8fr]" : "md:grid-cols-1";
+
   return (
     <main className="min-h-screen px-6 py-12">
       <div className="mx-auto max-w-6xl flex flex-col gap-8">
@@ -102,6 +138,18 @@ const ReportDetailPage = () => {
               >
                 {downloading ? "Downloading..." : "Download resume PDF"}
               </button>
+              {detailStatus === "succeeded" && detail && (
+                <button
+                  className="neo-button hidden md:inline-flex items-center gap-2 px-4 py-2 text-sm focus-visible:ring-2 focus-visible:ring-[color:var(--neo-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--neo-bg)]"
+                  onClick={handlePanelModeToggle}
+                  type="button"
+                  aria-label={`Switch desktop view to ${nextPanelModeLabel}`}
+                  title={`Desktop view: ${panelModeLabel}. Click to switch to ${nextPanelModeLabel}.`}
+                >
+                  <PanelModeIcon aria-hidden="true" />
+                  <span>Desktop: {panelModeLabel}</span>
+                </button>
+              )}
             </div>
           </div>
         </header>
@@ -123,8 +171,12 @@ const ReportDetailPage = () => {
         )}
 
         {detailStatus === "succeeded" && detail && (
-          <div className="grid gap-6 md:grid-cols-[1.2fr_0.8fr]">
-            <section className="h-screen overflow-y-scroll hide-scrollbar neo-card p-6 md:p-8 flex flex-col gap-5">
+          <div className={`grid gap-6 ${desktopGridClass}`}>
+            <section
+              className={`h-screen overflow-y-scroll hide-scrollbar neo-card p-6 md:p-8 flex flex-col gap-5 ${
+                panelMode === "right" ? "md:hidden" : ""
+              }`}
+            >
               <div className="flex flex-wrap items-center gap-3">
                 <span className="neo-inset rounded-full px-3 py-1 text-xs text-[color:var(--neo-muted)]">
                   Match score: {detail.matchScore ?? "--"}%
@@ -151,7 +203,11 @@ const ReportDetailPage = () => {
               </div>
             </section>
 
-            <section className="h-screen overflow-y-scroll hide-scrollbar neo-card p-6 md:p-8 flex flex-col gap-4">
+            <section
+              className={`h-screen overflow-y-scroll hide-scrollbar neo-card p-6 md:p-8 flex flex-col gap-4 ${
+                panelMode === "left" ? "md:hidden" : ""
+              }`}
+            >
               <CollapsibleSection
                 title="Technical questions"
                 description="Questions to validate depth of technical experience."
