@@ -273,5 +273,5 @@ Additional docs are available in:
 
 ## License
 
-No license is currently specified in this repository.
-If this project is intended for open-source use, add a license file (for example, MIT).
+Copyright (c) 2026 Manthan
+Licensed under the MIT License. You are free to use, copy, and modify this software, provided this notice is included.
