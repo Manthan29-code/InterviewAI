@@ -1,61 +1,100 @@
 # InterviewAI
 
-InterviewAI is a full-stack web application that helps job candidates prepare for interviews using AI-generated insights from their resume, self-description, and target job description.
+InterviewAI is a full-stack web application that helps candidates prepare for interviews using AI.
 
-## What This Project Is About
+Users can upload a resume, add their self-description and a target job description, and receive:
+- A job match score
+- Technical and behavioral interview questions with guidance
+- Skill gap analysis
+- A day-wise preparation plan
+- A tailored resume PDF
 
-This project lets a user:
-- Register and log in with cookie-based authentication.
-- Upload a PDF resume.
-- Add personal context (`selfDescription`) and target role details (`jobDescription`).
-- Generate a structured interview report with:
-  - Match score
-  - Technical interview questions
-  - Behavioral interview questions
-  - Skill gaps and severity
-  - A preparation plan
-- Download a generated, tailored resume PDF.
+## Features
 
-The backend handles authentication, file upload, PDF parsing, AI report generation, and persistence. The frontend provides a protected dashboard and report workflow.
-
-## Why You Need This
-
-Interview preparation is usually scattered across multiple tools. InterviewAI combines key preparation steps in one workflow:
-- Personalized analysis instead of generic interview tips.
-- Faster preparation by auto-generating role-specific questions and plan.
-- Better focus by highlighting concrete skill gaps.
-- Improved application quality with generated resume PDF output.
+- Cookie-based authentication with JWT
+- Secure protected routes
+- Resume upload and text extraction from PDF
+- AI-generated interview preparation report
+- Report history and detailed report pages
+- AI-generated, downloadable resume PDF
+- Neumorphism-inspired frontend design system
 
 ## Tech Stack
 
 ### Frontend
-- React (Vite)
+
+- React 19
+- Vite 7
+- React Router DOM
 - Redux Toolkit + Redux Persist
-- React Router
+- Tailwind CSS 4
 
 ### Backend
-- Node.js + Express
+
+- Node.js + Express 5
 - MongoDB + Mongoose
-- JWT + Cookie-based auth
-- Multer (PDF upload)
-- pdf-parse (resume extraction)
-- Google GenAI SDK (`@google/genai`)
+- Google GenAI SDK (Gemini)
 - Puppeteer (PDF generation)
+- Multer (file upload)
+- bcryptjs + jsonwebtoken
 
-## Setup Instructions
+## Monorepo Structure
 
-## 1. Prerequisites
+```text
+interviewAI/
+  backend/
+    server.js
+    package.json
+    src/
+      app.js
+      config/
+      controllers/
+      middleware/
+      model/
+      routes/
+      service/
+  frontend/
+    package.json
+    src/
+      components/
+      pages/
+      services/
+      store/
+  docs/
+    api-overview.md
+    controllers/
+```
 
-Install these first:
-- Node.js 18+ (LTS recommended)
-- npm 9+
+## Prerequisites
+
+- Node.js 20+ recommended
+- npm 10+ recommended
 - MongoDB (local or Atlas)
-- A Google Gemini API key
+- Gemini API key
 
-## 2. Clone and Install
+## Environment Variables
+
+Create a `.env` file inside `backend/`.
+
+```env
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+Optional frontend env in `frontend/.env`:
+
+```env
+VITE_API_BASE_URL=http://localhost:3000
+```
+
+## Local Setup
+
+### 1) Install dependencies
+
+From the project root:
 
 ```bash
-# from repository root
 cd backend
 npm install
 
@@ -63,153 +102,176 @@ cd ../frontend
 npm install
 ```
 
-## 3. Environment Variables
+### 2) Start backend
 
-Create a `.env` file in the project root (same level as `backend/` and `frontend/`).
-
-Use this template:
-
-```env
-# Required
-MONGO_URI=mongodb://127.0.0.1:27017/interviewai
-JWT_SECRET=replace_with_strong_random_secret
-GEMINI_API_KEY=your_gemini_api_key
-
-# Optional
-PORT=3000
-VITE_API_BASE_URL=http://localhost:3000
-```
-
-Notes:
-- Backend reads environment variables via `dotenv` in `backend/server.js`.
-- Frontend API defaults to `http://localhost:3000` if `VITE_API_BASE_URL` is not set.
-
-## 4. Run the Application
-
-Run backend:
+In one terminal:
 
 ```bash
 cd backend
 npm run dev
 ```
 
-Run frontend in another terminal:
+Backend runs on `http://localhost:3000`.
+
+### 3) Start frontend
+
+In a second terminal:
 
 ```bash
 cd frontend
 npm run dev
 ```
 
-Default URLs:
-- Frontend: `http://localhost:5173`
-- Backend: `http://localhost:3000`
+Frontend runs on `http://localhost:5173`.
 
-## 5. Build Frontend (Optional)
+## Scripts
 
-```bash
-cd frontend
-npm run build
-npm run preview
-```
+### Backend (`backend/package.json`)
 
-## Architecture Design
+- `npm run dev` - Run backend with nodemon
+- `npm test` - Placeholder test script (currently not implemented)
 
-## High-Level Flow
+### Frontend (`frontend/package.json`)
 
-1. User authenticates (register/login).
-2. Browser stores auth cookie.
-3. User submits resume PDF + text inputs.
-4. Backend parses resume text and calls AI service.
-5. Structured report is saved to MongoDB.
-6. Frontend fetches and displays reports.
-7. User can download generated resume PDF.
+- `npm run dev` - Start Vite dev server
+- `npm run build` - Build production bundle
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
 
-## Folder Structure
+## Authentication Model
 
-```text
-interviewAI/
-├── backend/
-│   ├── server.js                  # Backend entry point
-│   └── src/
-│       ├── app.js                 # Express app + middleware + routes
-│       ├── config/
-│       │   └── database.js        # MongoDB connection
-│       ├── controllers/
-│       │   ├── auth.controllers.js
-│       │   └── interview.controller.js
-│       ├── middleware/
-│       │   ├── auth.middleware.js # Cookie token + blacklist validation
-│       │   ├── file.middleware.js # Multer in-memory PDF upload (3 MB limit)
-│       │   └── logger.middleware.js
-│       ├── model/
-│       │   ├── user.model.js
-│       │   ├── interviewReport.model.js
-│       │   └── blacklist.model.js
-│       ├── routes/
-│       │   ├── auth.routes.js
-│       │   └── interview.routes.js
-│       └── service/
-│           └── ai.service.js      # Gemini prompt + resume PDF generation
-├── frontend/
-│   └── src/
-│       ├── App.jsx                # Route map
-│       ├── pages/                 # Auth, dashboard, report pages
-│       ├── components/            # Route protection and UI pieces
-│       ├── services/
-│       │   └── api.js             # Fetch wrapper with credentials
-│       └── store/                 # Redux slices and store setup
-└── docs/
-    ├── api-overview.md
-    └── controllers/
-```
+- Auth uses an HTTP cookie named `token`
+- JWT token is generated on register/login
+- Logout clears cookie and stores token in a blacklist collection
+- Protected routes validate token and blacklist status
 
-## Backend Layer Responsibilities
+Frontend requests must include credentials:
 
-- `routes/`: Define endpoint paths and middleware chain.
-- `controllers/`: Handle request/response and call services/models.
-- `service/`: Encapsulate AI generation and PDF generation logic.
-- `model/`: MongoDB schemas for users, reports, and blacklisted tokens.
-- `middleware/`: Auth checks, file handling, and request logging.
+- Fetch: `credentials: "include"`
 
-## Frontend Layer Responsibilities
-
-- `pages/`: Feature-level screens (login, dashboard, create report, report detail).
-- `components/`: Reusable UI and route guards.
-- `services/`: API abstraction (`credentials: include` for cookie auth).
-- `store/`: Global auth/report state and persistence.
-
-## API Summary
+## API Overview
 
 Base URL: `http://localhost:3000`
 
-Auth routes:
-- `POST /api/auth/register`
-- `POST /api/auth/login`
-- `GET /api/auth/logout`
-- `GET /api/auth/get-me`
+### Auth
 
-Interview routes (private):
-- `POST /api/interview` (multipart/form-data with `resume` field)
-- `GET /api/interview`
-- `GET /api/interview/report/:interviewId`
-- `GET /api/interview/resume/pdf/:interviewReportId`
+- `POST /api/auth/register` - Register user
+- `POST /api/auth/login` - Login user
+- `GET /api/auth/logout` - Logout user
+- `GET /api/auth/get-me` - Get current logged-in user
 
-## Important Runtime Notes
+### Interview Reports
 
-- CORS is configured for `http://localhost:5173`.
-- Frontend requests must include credentials (cookies).
-- Resume upload limit is 3 MB.
-- Protected routes return `401` for missing/invalid/blacklisted tokens.
+- `POST /api/interview` - Create interview report
+- `GET /api/interview` - Get all reports for logged-in user
+- `GET /api/interview/report/:interviewId` - Get one report by id
+- `GET /api/interview/resume/pdf/:interviewReportId` - Download generated resume PDF
+
+### Report Creation Request
+
+`POST /api/interview` expects `multipart/form-data`:
+
+- `resume` (PDF file, max 3 MB)
+- `selfDescription` (string)
+- `jobDescription` (string)
+
+## Data Models (Summary)
+
+### User
+
+- username (unique)
+- email (unique)
+- password (hashed)
+
+### InterviewReport
+
+- title
+- jobDescription
+- resume
+- selfDescription
+- matchScore (0-100)
+- technicalQuestions[]
+- behavioralQuestions[]
+- skillGaps[]
+- preparationPlan[]
+- user (ObjectId)
+- timestamps
+
+### Blacklist Token
+
+- token
+- timestamps
+
+## Application Flow
+
+1. User registers or logs in
+2. User creates a new report from dashboard
+3. User uploads resume + self-description + job description
+4. Backend parses resume PDF and calls Gemini
+5. AI response is validated and saved in MongoDB
+6. User views detailed report
+7. User can download tailored resume as PDF
+
+## CORS and Cookie Notes
+
+- Backend CORS origin is set to `http://localhost:5173`
+- Cookie auth requires frontend and backend to run on configured local ports
+- Cross-origin requests must include credentials
+
+## Troubleshooting
+
+### Mongo connection fails
+
+- Check `MONGO_URI`
+- Ensure MongoDB service/Atlas cluster is reachable
+
+### 401 on protected routes
+
+- Make sure frontend sends credentials
+- Login again to refresh cookie
+- Confirm token has not been blacklisted after logout
+
+### Resume upload fails
+
+- Confirm file is a PDF
+- Confirm file size is under 3 MB
+
+### Gemini-related failures
+
+- Check `GEMINI_API_KEY`
+- Ensure API key has access to Gemini model used in the backend
+
+## Known Limitations
+
+- No automated tests configured yet
+- Limited central error handling around AI calls
+- No queue/retry mechanism for long AI/PDF operations
+- No rate limiting on auth/report endpoints
 
 ## Documentation
 
-For deeper backend endpoint details:
+Additional docs are available in:
+
 - `docs/api-overview.md`
 - `docs/controllers/auth.controllers.md`
-- `docs/controllers/interview.controller.md`
 
-## Known Gaps You May Want to Improve
+## Contributing
 
-- `.env.example` currently includes only `GEMINI_API_KEY`; consider adding all required keys.
-- Add `engines` field or `.nvmrc` for explicit Node version guidance.
-- Add test scripts and CI checks for safer future changes.
+1. Fork the repo
+2. Create a feature branch
+3. Make focused changes
+4. Run frontend lint and verify backend startup
+5. Open a pull request with clear description
+
+## Roadmap Ideas
+
+- Add test coverage (unit + integration)
+- Add request validation and global error handling
+- Add rate limiting and hardening for production
+- Add report generation jobs/queue for scale
+- Add password reset and email verification
+
+## License
+
+Copyright (c) 2026 Manthan
+Licensed under the MIT License. You are free to use, copy, and modify this software, provided this notice is included.
