@@ -7,6 +7,8 @@ const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY
 })
 
+const MODEL = process.env.GEMINI_MODEL || "gemini-3-flash-preview"
+
 const interviewReportSchema = z.object({
     matchScore: z.number().describe("A score between 0 and 100 indicating how well the candidate's profile matches the job describe"),
     technicalQuestions: z.array(
@@ -48,7 +50,7 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
 `   
     console.log("inside generateInterviewReport")
     const response = await ai.models.generateContent({
-        model : "gemini-3-flash-preview" ,
+        model: MODEL ,
         contents: prompt,
         config: {
             responseMimeType: "application/json",
@@ -100,7 +102,7 @@ async function generateResumePdf({ resume, selfDescription, jobDescription }) {
                     `
 
     const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: MODEL,
         contents: prompt,
         config: {
             responseMimeType: "application/json",

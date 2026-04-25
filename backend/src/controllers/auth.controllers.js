@@ -40,7 +40,7 @@ async function registerUserController(req, res) {
     const token = jwt.sign(
         { id: user._id, username: user.username },
         process.env.JWT_SECRET,
-        { expiresIn: "1d" }
+        { expiresIn: process.env.JWT_SECRET_TIME_LIMITE }
     )
 
     res.cookie("token", token)
