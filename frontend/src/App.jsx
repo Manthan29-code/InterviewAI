@@ -8,6 +8,9 @@ import DashboardPage from "./pages/DashboardPage";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ReportDetailPage from "./pages/ReportDetailPage";
+import MockInterviewHome from "./pages/MockInterviewHome";
+import MockInterviewSession from "./pages/MockInterviewSession";
+import MockInterviewResult from "./pages/MockInterviewResult";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -41,6 +44,30 @@ const App = () => {
           element={
             <ProtectedRoute>
               <ReportDetailPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/mock-interview"
+          element={
+            <ProtectedRoute>
+              <MockInterviewHome />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/mock-interview/session/:sessionId"
+          element={
+            <ProtectedRoute>
+              <MockInterviewSession />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/mock-interview/result/:sessionId"
+          element={
+            <ProtectedRoute>
+              <MockInterviewResult />
             </ProtectedRoute>
           }
         />

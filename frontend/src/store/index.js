@@ -3,6 +3,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authReducer from "./auth.slice";
 import reportsReducer from "./reports.slice";
+import mockInterviewReducer from "./mockInterview.slice";
 
 const authPersistConfig = {
   key: "auth",
@@ -16,6 +17,7 @@ export const store = configureStore({
   reducer: {
     auth: persistedAuth,
     reports: reportsReducer,
+    mockInterview: mockInterviewReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

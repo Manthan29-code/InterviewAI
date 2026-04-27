@@ -56,5 +56,11 @@ export const api = {
       body: body instanceof FormData ? body : JSON.stringify(body),
       ...options,
     }),
+  patch: (path, body, options) =>
+    request(path, {
+      method: "PATCH",
+      body: body instanceof FormData ? body : JSON.stringify(body),
+      ...options,
+    }),
   getBlob: (path, options) => requestBlob(path, { method: "GET", ...options }),
 };
