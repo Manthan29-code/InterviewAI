@@ -19,6 +19,33 @@ Users can upload a resume, add their self-description and a target job descripti
 - AI-generated, downloadable resume PDF
 - Neumorphism-inspired frontend design system
 
+## Why You Should Use InterviewAI
+
+- Clear, structured feedback instead of generic chat answers
+- Practice sessions with scoring to reveal weak dimensions
+- Actionable next steps via skill gaps, prep plans, and roadmaps
+- Resume-to-report workflow reduces setup time
+- End-to-end flow from practice to improvement plan
+
+## How To Get Maximum Benefit
+
+- Use a specific job description to sharpen the report context
+- Keep your self-description honest and focused on real experience
+- Run mock sessions weekly and compare trends over time
+- Review the question bank and rate yourself right after each session
+- Generate roadmaps from your latest report and complete tasks in order
+- Revisit reports after every major resume or skill update
+
+## Concepts Used In This Project
+
+- AI-first workflows with JSON schema validation for stable outputs
+- Idempotent session flows to safely handle retries and disconnects
+- Spaced repetition scheduling for question bank reviews
+- Adaptive follow-up questions based on weak score dimensions
+- Role-based report generation from resume and job description
+- Neumorphic UI design system for consistent visuals
+- Cookie-based auth with JWT and token blacklisting
+
 ## Tech Stack
 
 ### Frontend
