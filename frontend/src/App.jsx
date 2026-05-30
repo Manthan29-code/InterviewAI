@@ -11,6 +11,9 @@ import ReportDetailPage from "./pages/ReportDetailPage";
 import MockInterviewHome from "./pages/MockInterviewHome";
 import MockInterviewSession from "./pages/MockInterviewSession";
 import MockInterviewResult from "./pages/MockInterviewResult";
+import MockInterviewHistory from "./pages/MockInterviewHistory";
+import QuestionBankPage from "./pages/QuestionBankPage";
+import SkillRoadmapPage from "./pages/SkillRoadmapPage";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -68,6 +71,30 @@ const App = () => {
           element={
             <ProtectedRoute>
               <MockInterviewResult />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/mock-interview/history"
+          element={
+            <ProtectedRoute>
+              <MockInterviewHistory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/mock-interview/question-bank"
+          element={
+            <ProtectedRoute>
+              <QuestionBankPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/mock-interview/roadmap"
+          element={
+            <ProtectedRoute>
+              <SkillRoadmapPage />
             </ProtectedRoute>
           }
         />

@@ -580,7 +580,18 @@ async function getHistoryController(req, res) {
 
     res.status(200).json({
         message: "History fetched.",
-        sessions,
+        sessions: sessions.map(session => ({
+            id: session._id,
+            status: session.status,
+            targetRole: session.targetRole,
+            difficulty: session.difficulty,
+            maxTurns: session.maxTurns,
+            currentTurn: session.currentTurn,
+            overallScores: session.overallScores,
+            startedAt: session.startedAt,
+            endedAt: session.endedAt,
+            createdAt: session.createdAt,
+        })),
         pagination: {
             page: parseInt(page),
             limit: parseInt(limit),

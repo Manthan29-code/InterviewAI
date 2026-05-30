@@ -29,7 +29,21 @@ async function getQuestionBankController(req, res) {
 
     res.status(200).json({
         message: "Question bank fetched.",
-        items,
+        items: items.map(item => ({
+            id: item._id,
+            question: item.question,
+            questionType: item.questionType,
+            topicTags: item.topicTags,
+            difficulty: item.difficulty,
+            timesSeen: item.timesSeen,
+            timesCorrect: item.timesCorrect,
+            lastScore: item.lastScore,
+            nextReviewAt: item.nextReviewAt,
+            stabilityBucket: item.stabilityBucket,
+            sourceReport: item.sourceReport,
+            createdAt: item.createdAt,
+            updatedAt: item.updatedAt,
+        })),
         pagination: {
             page: parseInt(page),
             limit: parseInt(limit),

@@ -62,6 +62,31 @@ export const abandonMockSession = createAsyncThunk(
   }
 );
 
+export const fetchMockHistory = createAsyncThunk(
+  "mockInterview/history",
+  async (params = {}, { rejectWithValue }) => {
+    try {
+      const search = new URLSearchParams(params).toString();
+      const response = await api.get(`/api/mock-interview/history${search ? `?${search}` : ""}`);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchMockTrends = createAsyncThunk(
+  "mockInterview/trends",
+  async (window = "30d", { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/api/mock-interview/trends?window=${window}`);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const initialState = {
   activeSession: null,
   currentQuestion: null,
@@ -74,6 +99,13 @@ const initialState = {
   submitError: null,
   result: null,
   resultStatus: "idle",
+  historyItems: [],
+  historyStatus: "idle",
+  historyError: null,
+  historyPagination: null,
+  trends: [],
+  trendsStatus: "idle",
+  trendsError: null,
 };
 
 const mockInterviewSlice = createSlice({
@@ -90,6 +122,13 @@ const mockInterviewSlice = createSlice({
       state.error = null;
       state.result = null;
       state.resultStatus = "idle";
+      state.historyItems = [];
+      state.historyStatus = "idle";
+      state.historyError = null;
+      state.historyPagination = null;
+      state.trends = [];
+      state.trendsStatus = "idle";
+      state.trendsError = null;
     },
   },
   extraReducers: (builder) => {
@@ -154,6 +193,32 @@ const mockInterviewSlice = createSlice({
       .addCase(completeMockSession.rejected, (state, action) => {
         state.resultStatus = "failed";
         state.error = action.payload;
+      });
+    builder
+      .addCase(fetchMockHistory.pending, (state) => {
+        state.historyStatus = "loading";
+        state.historyError = null;
+      })
+      .addCase(fetchMockHistory.fulfilled, (state, action) => {
+        state.historyStatus = "succeeded";
+        state.historyItems = action.payload.sessions || [];
+        state.historyPagination = action.payload.pagination || null;
+      })
+      .addCase(fetchMockHistory.rejected, (state, action) => {
+        state.historyStatus = "failed";
+        state.historyError = action.payload;
+      })
+      .addCase(fetchMockTrends.pending, (state) => {
+        state.trendsStatus = "loading";
+        state.trendsError = null;
+      })
+      .addCase(fetchMockTrends.fulfilled, (state, action) => {
+        state.trendsStatus = "succeeded";
+        state.trends = action.payload.trends || [];
+      })
+      .addCase(fetchMockTrends.rejected, (state, action) => {
+        state.trendsStatus = "failed";
+        state.trendsError = action.payload;
       });
   },
 });

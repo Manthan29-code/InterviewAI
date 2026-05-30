@@ -4,6 +4,8 @@ import storage from "redux-persist/lib/storage";
 import authReducer from "./auth.slice";
 import reportsReducer from "./reports.slice";
 import mockInterviewReducer from "./mockInterview.slice";
+import questionBankReducer from "./questionBank.slice";
+import roadmapReducer from "./roadmap.slice";
 
 const authPersistConfig = {
   key: "auth",
@@ -18,6 +20,8 @@ export const store = configureStore({
     auth: persistedAuth,
     reports: reportsReducer,
     mockInterview: mockInterviewReducer,
+    questionBank: questionBankReducer,
+    roadmap: roadmapReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -37,6 +37,26 @@ const DashboardPage = () => {
             >
               <span className="text-white"> Start Simulator</span>
             </Link>
+            <div className="flex flex-wrap gap-3 text-xs font-semibold">
+              <Link
+                to="/mock-interview/history"
+                className="neo-button px-3 py-2 text-[color:var(--neo-muted)]"
+              >
+                History
+              </Link>
+              <Link
+                to="/mock-interview/question-bank"
+                className="neo-button px-3 py-2 text-[color:var(--neo-muted)]"
+              >
+                Question Bank
+              </Link>
+              <Link
+                to="/mock-interview/roadmap"
+                className="neo-button px-3 py-2 text-[color:var(--neo-muted)]"
+              >
+                Skill Roadmap
+              </Link>
+            </div>
           </div>
 
           <div className="neo-card p-6 md:p-8 flex flex-col justify-between gap-6">

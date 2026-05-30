@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TopBar from "../components/TopBar";
 import MockInterviewConfigForm from "../components/mock/MockInterviewConfigForm";
-import { resumeActiveSession } from "../store/mockInterview.slice";
+import { abandonMockSession, clearSessionState, resumeActiveSession } from "../store/mockInterview.slice";
 
 const MockInterviewHome = () => {
   const dispatch = useDispatch();
@@ -115,6 +115,37 @@ const MockInterviewHome = () => {
               <p className="text-xs text-[color:var(--neo-muted)]">
                 Simulate real pressure with customizable time limits for each question.
               </p>
+            </div>
+          </section>
+
+          <section className="neo-card p-6 md:p-8">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div>
+                <h3 className="font-display text-2xl font-bold">Keep improving</h3>
+                <p className="text-sm text-[color:var(--neo-muted)]">
+                  Review your past sessions, revisit questions, and follow your skill roadmap.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  to="/mock-interview/history"
+                  className="neo-button px-4 py-2 text-sm font-semibold"
+                >
+                  View History
+                </Link>
+                <Link
+                  to="/mock-interview/question-bank"
+                  className="neo-button px-4 py-2 text-sm font-semibold"
+                >
+                  Question Bank
+                </Link>
+                <Link
+                  to="/mock-interview/roadmap"
+                  className="neo-button px-4 py-2 text-sm font-semibold bg-[color:var(--neo-accent)] text-white"
+                >
+                  Skill Roadmap
+                </Link>
+              </div>
             </div>
           </section>
         </div>

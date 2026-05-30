@@ -93,7 +93,17 @@ async function getRoadmapController(req, res) {
 
     res.status(200).json({
         message: "Roadmaps fetched.",
-        roadmaps,
+        roadmaps: roadmaps.map(roadmap => ({
+            id: roadmap._id,
+            sourceReport: roadmap.sourceReport,
+            skill: roadmap.skill,
+            severity: roadmap.severity,
+            tasks: roadmap.tasks,
+            progressPercent: roadmap.progressPercent,
+            targetDate: roadmap.targetDate,
+            createdAt: roadmap.createdAt,
+            updatedAt: roadmap.updatedAt,
+        })),
     })
 }
 
