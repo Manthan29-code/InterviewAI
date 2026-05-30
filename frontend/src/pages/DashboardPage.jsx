@@ -33,9 +33,9 @@ const DashboardPage = () => {
             </div>
             <Link
               to="/mock-interview"
-              className="neo-button py-3 text-center font-bold bg-[color:var(--neo-accent)] text-white"
+              className="neo-button py-3 text-center font-bold bg-[color:var(--neo-accent)] "
             >
-              Start Simulator
+              <span className="text-white"> Start Simulator</span>
             </Link>
           </div>
 
